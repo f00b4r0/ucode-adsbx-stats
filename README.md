@@ -47,6 +47,8 @@ sudo su adsbexchange -s /bin/sh -c 'nice -19 ./adsbx-stats.uc &'
 Compared to the Bash original, this script cuts a few corners:
 
  - Only one path is searched for JSON files (easy to improve if needed);
+ - No creation of UUID file is attempted: if UUID is missing, the script will
+   not start.
  - No local copy of JSON file is performed (unnecessary: VFS guarantees
    read/writes to be atomic, if the data is incomplete we simply discard it and
    retry. No need to be pedantic here as missed uploads will only affect local
@@ -58,6 +60,8 @@ Compared to the Bash original, this script cuts a few corners:
    intervals (at least not without using uloop - not available on !OpenWrt, and
    here again, it doesn't matter: this will only introduce some jitter in local
    map refresh rate);
+ - Finally no data is sent when there is no aircraft records. This does not
+   affect the feeder uptime stats.
 
 All these tweaks contribute to making the tool much faster, much less CPU heavy,
 light on memory usage, and thus much more suitable for underpowered systems

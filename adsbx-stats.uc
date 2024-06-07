@@ -19,17 +19,10 @@ function floor(f)
 	return i;
 }
 
-// grab UUID || create || die
-let uuid = trim(readfile(UUID_FILE));
-if (!uuid) {
-	uuid = readfile("/proc/sys/kernel/random/uuid");
-	if (!uuid)
-		die("Couldn't generate UUID!");
-	let wf = writefile(UUID_FILE, uuid);
-	if (!wf)
-		die("Couldn't write UUID file!");
-	trim(uuid);
-}
+// grab UUID || die
+const uuid = trim(readfile(UUID_FILE));
+if (!uuid)
+	die("Couldn't read UUID!");
 
 // enter loop
 while (true) {
@@ -48,7 +41,7 @@ while (true) {
 	}
 
 	if (!data) {
-		warn("Warning: no data!");
+		warn("Warning: no data!\n");
 		continue;
 	}
 
